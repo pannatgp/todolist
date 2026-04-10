@@ -1,4 +1,4 @@
-# 🎄🎉 Todo App — Multi-Theme
+# 🎄🎉🔫 Todo App — Chistmas & Songkran Theme
 
 A to-do list web app with swappable themes — currently featuring a **Christmas** holiday theme and a **Thai Songkran** water festival theme. Built with a notebook-paper card design, Thai language support, and a lightweight Node.js/Express + SQLite backend.
 
@@ -109,7 +109,7 @@ All endpoints are prefixed with `/api`.
 
 - **Theme Switcher** — floating 🎨 button with dropdown to swap between themes
 - **🎄 Christmas Theme** — teal green background, cream notebook card, red accents, festive emojis (📌🎄🎅)
-- **🎉 Songkran Theme** — blue water gradient background, white card with wave border, orange accents, water festival emojis (💦🔫🐘🌺)
+- **🎉 Thai Songkran Theme** — blue water gradient background, white card with wave border, orange accents, water festival emojis (💦🔫🐘🌺)
 - **Theme Persistence** — selected theme saves to localStorage and persists on refresh
 - **Smooth Transitions** — colors crossfade smoothly when switching themes
 - **Add tasks** — type and press Enter or click Add
