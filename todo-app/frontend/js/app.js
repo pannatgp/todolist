@@ -1,15 +1,107 @@
 /* ═══════════════════════════════════════════════════════════
-   Christmas Todo App — frontend logic
-   All state is authoritative on the server; the local `tasks`
-   array is a cache that is kept in sync after each API call.
+   Todo App — frontend logic
    ═══════════════════════════════════════════════════════════ */
 
 const API = '/api/tasks';
 
-// ── In-memory cache ──────────────────────────────────────────
+// ── In-memory task cache ─────────────────────────────────────
 let tasks = [];
 
-// ── Month subtitle ───────────────────────────────────────────
+// ── Themes ───────────────────────────────────────────────────
+// Add more themes here — each needs bodyClass, decos, and emptyMsg.
+const THEMES = {
+  christmas: {
+    label:    '🎄 Christmas',
+    bodyClass: 'theme-christmas',
+    emptyMsg: 'No tasks yet — add one above! 🎄',
+    decos: {
+      topLeft:     '📌',
+      topRight:    '🎄',
+      bottomLeft:  '🎅',
+      bottomRight: '',
+    },
+  },
+  songkran: {
+    label:    '🎉 Songkran',
+    bodyClass: 'theme-songkran',
+    emptyMsg: 'No tasks yet — add one above! 💦',
+    decos: {
+      topLeft:     '💦',
+      topRight:    '🔫',
+      bottomLeft:  '🐘',
+      bottomRight: '🌺',
+    },
+  },
+};
+
+let currentTheme = localStorage.getItem('todo-theme') || 'christmas';
+
+// ── Apply theme ───────────────────────────────────────────────
+// animate=false on initial load (no flash); animate=true on switch.
+function applyTheme(id, animate) {
+  const theme = THEMES[id];
+  if (!theme) return;
+
+  function doApply() {
+    // Swap body class
+    document.body.className = theme.bodyClass;
+
+    // Update decorative emojis
+    document.getElementById('decoTopLeft').textContent     = theme.decos.topLeft;
+    document.getElementById('decoTopRight').textContent    = theme.decos.topRight;
+    document.getElementById('decoBottomLeft').textContent  = theme.decos.bottomLeft;
+    document.getElementById('decoBottomRight').textContent = theme.decos.bottomRight;
+
+    // Highlight active option in dropdown
+    document.querySelectorAll('.theme-option').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.theme === id);
+    });
+
+    currentTheme = id;
+    localStorage.setItem('todo-theme', id);
+    render(); // refresh empty-state message
+  }
+
+  if (animate) {
+    // Quick opacity crossfade so color/font changes are invisible during swap
+    const body = document.body;
+    body.style.transition = 'opacity 0.15s ease';
+    body.style.opacity    = '0';
+    setTimeout(() => {
+      doApply();
+      body.style.opacity = '1';
+      setTimeout(() => {
+        body.style.removeProperty('opacity');
+        body.style.removeProperty('transition');
+      }, 300);
+    }, 160);
+  } else {
+    doApply();
+  }
+}
+
+// ── Theme dropdown ────────────────────────────────────────────
+function selectTheme(id) {
+  closeThemeDropdown();
+  if (id !== currentTheme) applyTheme(id, true);
+}
+
+function toggleThemeDropdown() {
+  document.getElementById('themeDropdown').classList.toggle('open');
+}
+
+function closeThemeDropdown() {
+  document.getElementById('themeDropdown').classList.remove('open');
+}
+
+// Close dropdown when clicking anywhere outside the switcher
+document.addEventListener('click', e => {
+  if (!document.getElementById('themeSwitcher').contains(e.target)) {
+    closeThemeDropdown();
+  }
+});
+
+// ── Month subtitle ────────────────────────────────────────────
 const MONTHS = [
   'January','February','March','April','May','June',
   'July','August','September','October','November','December'
@@ -21,12 +113,12 @@ const MONTHS = [
     MONTHS[d.getMonth()] + ' ' + d.getFullYear();
 })();
 
-// ── Enter key on input ───────────────────────────────────────
+// ── Enter key on input ────────────────────────────────────────
 document.getElementById('taskInput').addEventListener('keydown', e => {
   if (e.key === 'Enter') addTask();
 });
 
-// ── Helpers ──────────────────────────────────────────────────
+// ── Helpers ───────────────────────────────────────────────────
 function escHtml(str) {
   return str
     .replace(/&/g, '&amp;')
@@ -35,7 +127,7 @@ function escHtml(str) {
     .replace(/"/g, '&quot;');
 }
 
-// ── Error toast ──────────────────────────────────────────────
+// ── Error toast ───────────────────────────────────────────────
 function showError(msg) {
   const toast = document.getElementById('errorToast');
   toast.textContent = msg;
@@ -46,36 +138,29 @@ function showError(msg) {
 
 // ── Loading state ─────────────────────────────────────────────
 function setLoading(on) {
-  const spinner = document.getElementById('spinnerWrap');
-  const grid    = document.getElementById('tasksGrid');
-  const meta    = document.querySelector('.task-meta');
-  spinner.style.display = on ? 'flex'   : 'none';
-  grid.style.display    = on ? 'none'   : 'grid';
-  meta.style.display    = on ? 'none'   : 'flex';
+  document.getElementById('spinnerWrap').style.display = on ? 'flex'  : 'none';
+  document.getElementById('tasksGrid').style.display   = on ? 'none'  : 'grid';
+  document.querySelector('.task-meta').style.display   = on ? 'none'  : 'flex';
 }
 
 // ── Render ────────────────────────────────────────────────────
 function render() {
-  const grid      = document.getElementById('tasksGrid');
-  const counter   = document.getElementById('taskCounter');
-  const clearBtn  = document.getElementById('clearCompleted');
+  const grid     = document.getElementById('tasksGrid');
+  const counter  = document.getElementById('taskCounter');
+  const clearBtn = document.getElementById('clearCompleted');
 
   const total     = tasks.length;
   const doneCount = tasks.filter(t => t.completed).length;
   const remaining = total - doneCount;
 
-  // Counter + clear button visibility
-  if (total === 0) {
-    counter.textContent  = '';
-    clearBtn.style.display = 'none';
-  } else {
-    counter.textContent    = `${remaining} remaining · ${doneCount} done`;
-    clearBtn.style.display = doneCount > 0 ? 'inline-block' : 'none';
-  }
+  // Counter + clear button
+  counter.textContent    = total ? `${remaining} remaining · ${doneCount} done` : '';
+  clearBtn.style.display = doneCount > 0 ? 'inline-block' : 'none';
 
   // Task list
   if (total === 0) {
-    grid.innerHTML = '<div class="empty-state">No tasks yet — add one above! 🎄</div>';
+    const msg = THEMES[currentTheme]?.emptyMsg ?? 'No tasks yet — add one above!';
+    grid.innerHTML = `<div class="empty-state">${msg}</div>`;
     return;
   }
 
@@ -116,7 +201,7 @@ async function fetchTasks() {
   }
 }
 
-// ── Add task ─────────────────────────────────────────────────
+// ── Add task ──────────────────────────────────────────────────
 async function addTask() {
   const input  = document.getElementById('taskInput');
   const addBtn = document.getElementById('addBtn');
@@ -131,8 +216,8 @@ async function addTask() {
       body:    JSON.stringify({ text }),
     });
     if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.error || `Server responded ${res.status}`);
+      const body = await res.json().catch(() => ({}));
+      throw new Error(body.error || `Server responded ${res.status}`);
     }
     const task = await res.json();
     tasks.push(task);
@@ -175,7 +260,7 @@ async function deleteTask(id) {
   }
 }
 
-// ── Clear all completed tasks ─────────────────────────────────
+// ── Clear all completed ───────────────────────────────────────
 async function clearCompleted() {
   if (!tasks.some(t => t.completed)) return;
   try {
@@ -190,4 +275,5 @@ async function clearCompleted() {
 }
 
 // ── Bootstrap ─────────────────────────────────────────────────
+applyTheme(currentTheme, false); // restore saved theme before first paint
 fetchTasks();

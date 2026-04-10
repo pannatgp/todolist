@@ -4,15 +4,38 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>To Do List</title>
-  <link href="https://fonts.googleapis.com/css2?family=Sacramento&family=Itim&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Sacramento&family=Itim&family=Prompt:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-  <!-- Error toast -->
+  <!-- ── Theme switcher (floating top-right) ── -->
+  <div class="theme-switcher" id="themeSwitcher">
+    <button
+      class="theme-toggle-btn"
+      id="themeToggleBtn"
+      onclick="toggleThemeDropdown()"
+      title="Switch theme"
+      aria-label="Switch theme"
+      aria-haspopup="true"
+    >🎨</button>
+    <div class="theme-dropdown" id="themeDropdown" role="menu">
+      <button class="theme-option" data-theme="christmas" onclick="selectTheme('christmas')" role="menuitem">
+        🎄 Christmas
+      </button>
+      <button class="theme-option" data-theme="songkran"  onclick="selectTheme('songkran')"  role="menuitem">
+        🎉 Songkran
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Error toast ── -->
   <div class="error-toast" id="errorToast" role="alert" aria-live="assertive"></div>
 
-  <!-- Input bar -->
+  <!-- ── Input bar ── -->
   <div class="input-bar">
     <input
       id="taskInput"
@@ -23,11 +46,12 @@
     <button class="add-btn" id="addBtn" onclick="addTask()">Add</button>
   </div>
 
-  <!-- Card -->
+  <!-- ── Card ── -->
   <div class="card">
-    <span class="deco deco-pin"      aria-hidden="true">📌</span>
-    <span class="deco deco-candy"    aria-hidden="true">🍬</span>
-    <span class="deco deco-stocking" aria-hidden="true">🧦</span>
+    <span class="deco deco-top-left"     id="decoTopLeft"     aria-hidden="true"></span>
+    <span class="deco deco-top-right"    id="decoTopRight"    aria-hidden="true"></span>
+    <span class="deco deco-bottom-left"  id="decoBottomLeft"  aria-hidden="true"></span>
+    <span class="deco deco-bottom-right" id="decoBottomRight" aria-hidden="true"></span>
 
     <div class="card-header">
       <div class="card-title">To Do List</div>
@@ -50,9 +74,7 @@
     </div>
 
     <!-- Task grid -->
-    <div class="tasks-grid" id="tasksGrid">
-      <div class="empty-state">No tasks yet — add one above! 🎄</div>
-    </div>
+    <div class="tasks-grid" id="tasksGrid"></div>
   </div>
 
   <script src="js/app.js"></script>

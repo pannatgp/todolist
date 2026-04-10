@@ -1,20 +1,68 @@
 /* ═══════════════════════════════════════════════════════════
-   Christmas Todo App — stylesheet
+   Todo App — stylesheet
+   Theming via CSS custom properties.
+   Default values = Christmas theme.
+   Overrides in body.theme-songkran{} at the bottom.
    ═══════════════════════════════════════════════════════════ */
 
+/* ── CSS custom properties (Christmas defaults) ────────────── */
+:root {
+  /* Body */
+  --body-bg:           #2e9e8c;
+  --body-dot-a:        rgba(255,255,255,0.18);
+  --body-dot-b:        rgba(255,255,255,0.10);
+
+  /* Card */
+  --card-bg:           #fdf5e0;
+  --card-border:       none;
+  --card-shadow:       0 10px 40px rgba(0,0,0,0.2);
+  --card-margin-line:  #f4a4a4;
+  --card-rule-line:    #cfc2a0;
+
+  /* Title */
+  --title-font:        'Sacramento', cursive;
+  --title-size:        62px;
+  --title-color:       #c0392b;
+  --subtitle-color:    #2471a3;
+
+  /* Add button */
+  --add-bg:            #b83232;
+  --add-bg-hover:      #d63c3c;
+
+  /* Divider */
+  --divider-color:     #d5c8a8;
+
+  /* Counter / clear */
+  --counter-color:     #9a8a6a;
+  --clear-color:       #c0392b;
+
+  /* Spinner */
+  --spinner-track:     #d5c8a8;
+  --spinner-fill:      #2471a3;
+
+  /* Tasks */
+  --task-text:         #1a5e8a;
+  --task-check:        #2471a3;
+  --task-ts:           #b0a080;
+  --task-empty:        #b8a888;
+  --delete-color:      #c0392b;
+  --delete-hover:      #922b21;
+}
+
+/* ── Reset ──────────────────────────────────────────────────── */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* ── Background ─────────────────────────────────────────────── */
+/* ── Body ───────────────────────────────────────────────────── */
 body {
   min-height: 100vh;
-  background-color: #2e9e8c;
+  background-color: var(--body-bg);
   background-image:
-    radial-gradient(circle, rgba(255,255,255,0.18) 1.5px, transparent 1.5px),
-    radial-gradient(circle, rgba(255,255,255,0.10) 1px,   transparent 1px);
+    radial-gradient(circle, var(--body-dot-a) 1.5px, transparent 1.5px),
+    radial-gradient(circle, var(--body-dot-b) 1px,   transparent 1px);
   background-size: 36px 36px, 18px 18px;
   background-position: 0 0, 9px 9px;
   font-family: 'Itim', cursive;
@@ -22,6 +70,91 @@ body {
   flex-direction: column;
   align-items: center;
   padding: 40px 16px 60px;
+}
+
+/* ── Theme switcher ─────────────────────────────────────────── */
+.theme-switcher {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 200;
+}
+
+.theme-toggle-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.92);
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.theme-toggle-btn:hover {
+  transform: scale(1.1) rotate(-10deg);
+  box-shadow: 0 4px 18px rgba(0,0,0,0.28);
+}
+
+.theme-dropdown {
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+  position: absolute;
+  top: 52px;
+  right: 0;
+  min-width: 168px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.18);
+  padding: 6px;
+  animation: dropIn 0.15s ease;
+}
+
+.theme-dropdown.open {
+  display: flex;
+}
+
+@keyframes dropIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.theme-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 9px 14px;
+  border: none;
+  border-radius: 8px;
+  background: none;
+  font-family: 'Itim', cursive;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+}
+
+.theme-option:hover {
+  background: #f3f3f3;
+}
+
+.theme-option.active {
+  background: #e8f5e9;
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+/* Active highlight adapts in Songkran mode */
+body.theme-songkran .theme-option.active {
+  background: #dff1ff;
+  color: #0077b6;
 }
 
 /* ── Error toast ─────────────────────────────────────────────── */
@@ -84,7 +217,7 @@ body {
   padding: 11px 26px;
   border-radius: 30px;
   border: none;
-  background: #b83232;
+  background: var(--add-bg);
   color: #fff;
   font-family: 'Itim', cursive;
   font-size: 15px;
@@ -94,32 +227,38 @@ body {
   white-space: nowrap;
 }
 
-.add-btn:hover        { background: #d63c3c; }
-.add-btn:active       { transform: scale(0.96); }
-.add-btn:disabled     { opacity: 0.6; cursor: not-allowed; transform: none; }
+.add-btn:hover    { background: var(--add-bg-hover); }
+.add-btn:active   { transform: scale(0.96); }
+.add-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
 /* ── Card ────────────────────────────────────────────────────── */
 .card {
   width: 100%;
   max-width: 680px;
-  background: #fdf5e0;
+  background-color: var(--card-bg);
+  border: var(--card-border);
   border-radius: 14px;
   padding: 38px 32px 44px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  box-shadow: var(--card-shadow);
   position: relative;
   overflow: hidden;
 
-  /* Lined notebook paper */
+  /* Notebook paper lines (colors driven by CSS vars) */
   background-image:
-    linear-gradient(to right, transparent 54px, #f4a4a4 54px, #f4a4a4 56px, transparent 56px),
+    linear-gradient(
+      to right,
+      transparent 54px,
+      var(--card-margin-line) 54px,
+      var(--card-margin-line) 56px,
+      transparent 56px
+    ),
     repeating-linear-gradient(
       to bottom,
       transparent 0px,
       transparent 34px,
-      #cfc2a0 34px,
-      #cfc2a0 35px
+      var(--card-rule-line) 34px,
+      var(--card-rule-line) 35px
     );
-  background-color: #fdf5e0;
   background-size: 100% 100%, 100% 35px;
   background-position: 0 0, 0 172px;
 }
@@ -131,9 +270,10 @@ body {
   line-height: 1;
   user-select: none;
 }
-.deco-pin      { top: 14px; left: 18px; }
-.deco-candy    { top: 14px; right: 18px; }
-.deco-stocking { bottom: 14px; left: 18px; }
+.deco-top-left     { top: 14px;    left: 18px;  }
+.deco-top-right    { top: 14px;    right: 18px; }
+.deco-bottom-left  { bottom: 14px; left: 18px;  }
+.deco-bottom-right { bottom: 14px; right: 18px; }
 
 /* ── Card header ─────────────────────────────────────────────── */
 .card-header {
@@ -143,17 +283,16 @@ body {
 }
 
 .card-title {
-  font-family: 'Sacramento', cursive;
-  font-size: 62px;
-  color: #c0392b;
+  font-family: var(--title-font);
+  font-size: var(--title-size);
+  color: var(--title-color);
   line-height: 1.1;
   letter-spacing: 1px;
 }
 
 .card-subtitle {
-  font-family: 'Itim', cursive;
   font-size: 15px;
-  color: #2471a3;
+  color: var(--subtitle-color);
   letter-spacing: 2px;
   text-transform: uppercase;
   margin-top: 2px;
@@ -162,11 +301,11 @@ body {
 /* ── Divider ─────────────────────────────────────────────────── */
 .divider {
   border: none;
-  border-top: 1.5px solid #d5c8a8;
+  border-top: 1.5px solid var(--divider-color);
   margin: 0 0 10px;
 }
 
-/* ── Task meta row (counter + clear button) ──────────────────── */
+/* ── Task meta row ───────────────────────────────────────────── */
 .task-meta {
   display: flex;
   align-items: center;
@@ -177,15 +316,14 @@ body {
 
 .task-counter {
   font-size: 12px;
-  color: #9a8a6a;
-  font-family: 'Itim', cursive;
+  color: var(--counter-color);
 }
 
 .clear-btn {
   display: none;
   background: none;
-  border: 1px solid #c0392b;
-  color: #c0392b;
+  border: 1px solid var(--clear-color);
+  color: var(--clear-color);
   font-family: 'Itim', cursive;
   font-size: 12px;
   padding: 3px 12px;
@@ -195,7 +333,7 @@ body {
 }
 
 .clear-btn:hover {
-  background: #c0392b;
+  background: var(--clear-color);
   color: #fff;
 }
 
@@ -210,8 +348,8 @@ body {
 .spinner-ring {
   width: 36px;
   height: 36px;
-  border: 3px solid #d5c8a8;
-  border-top-color: #2471a3;
+  border: 3px solid var(--spinner-track);
+  border-top-color: var(--spinner-fill);
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
 }
@@ -231,7 +369,7 @@ body {
 .empty-state {
   grid-column: 1 / -1;
   text-align: center;
-  color: #b8a888;
+  color: var(--task-empty);
   font-size: 14px;
   padding: 24px 0 10px;
   font-style: italic;
@@ -257,7 +395,7 @@ body {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  border: 2px solid #2471a3;
+  border: 2px solid var(--task-check);
   background: #fff;
   cursor: pointer;
   display: flex;
@@ -268,8 +406,8 @@ body {
 }
 
 .task-check.checked {
-  background: #2471a3;
-  border-color: #2471a3;
+  background: var(--task-check);
+  border-color: var(--task-check);
 }
 
 .task-check.checked::after {
@@ -289,7 +427,7 @@ body {
 .task-text {
   font-family: 'Itim', cursive;
   font-size: 14px;
-  color: #1a5e8a;
+  color: var(--task-text);
   line-height: 1.35;
   word-break: break-word;
   transition: opacity 0.2s;
@@ -302,7 +440,7 @@ body {
 
 .task-ts {
   font-size: 10px;
-  color: #b0a080;
+  color: var(--task-ts);
   margin-top: 1px;
 }
 
@@ -312,7 +450,7 @@ body {
   opacity: 0;
   background: none;
   border: none;
-  color: #c0392b;
+  color: var(--delete-color);
   font-size: 13px;
   cursor: pointer;
   padding: 2px 4px;
@@ -323,7 +461,59 @@ body {
 }
 
 .delete-btn:hover {
-  color: #922b21;
+  color: var(--delete-hover);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SONGKRAN THEME OVERRIDES
+   ═══════════════════════════════════════════════════════════ */
+
+body.theme-songkran {
+  /* Color tokens */
+  --body-bg:          #0096c7;
+  --add-bg:           #f77f00;
+  --add-bg-hover:     #ff9a1f;
+  --card-bg:          #e8f6ff;
+  --card-border:      2.5px solid #4cc9f0;
+  --card-shadow:      0 10px 40px rgba(0,150,200,0.28);
+  --card-margin-line: #74c7f0;
+  --card-rule-line:   #b8e4f9;
+  --title-font:       'Prompt', sans-serif;
+  --title-size:       52px;
+  --title-color:      #0077b6;
+  --subtitle-color:   #f77f00;
+  --divider-color:    #b8e4f9;
+  --counter-color:    #023e8a;
+  --clear-color:      #f77f00;
+  --spinner-track:    #b8e4f9;
+  --spinner-fill:     #f77f00;
+  --task-text:        #023e8a;
+  --task-check:       #f77f00;
+  --task-ts:          #48cae4;
+  --task-empty:       #90c7e8;
+  --delete-color:     #e63946;
+  --delete-hover:     #c1121f;
+
+  /* Body background: gradient + dot pattern */
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,0.22) 2px, transparent 2px),
+    radial-gradient(circle, rgba(255,255,255,0.12) 1px, transparent 1px),
+    linear-gradient(160deg, #1e90ff 0%, #00bfff 55%, #0077b6 100%);
+  background-size: 30px 30px, 15px 15px, 100% 100%;
+  background-position: 0 0, 8px 8px, 0 0;
+}
+
+/* Card gets inner glow to reinforce the water vibe */
+body.theme-songkran .card {
+  box-shadow:
+    0 10px 40px rgba(0,150,200,0.28),
+    inset 0 0 0 1px rgba(76,201,240,0.3);
+}
+
+/* Songkran title uses Prompt — no italic */
+body.theme-songkran .card-title {
+  letter-spacing: 0;
+  font-weight: 600;
 }
 
 /* ── Responsive ──────────────────────────────────────────────── */
@@ -333,6 +523,9 @@ body {
   }
   .card-title {
     font-size: 50px;
+  }
+  body.theme-songkran .card-title {
+    font-size: 40px;
   }
   .card {
     padding: 34px 20px 40px;
