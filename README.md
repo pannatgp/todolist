@@ -1,6 +1,6 @@
-# 🎄 Christmas Todo App
+# 🎄🎉 Todo App — Multi-Theme
 
-A Christmas/holiday-themed to-do list web app with a Thai-style notebook paper design. Tasks are persisted in a SQLite database served by a lightweight Node.js/Express backend.
+A to-do list web app with swappable themes — currently featuring a **Christmas** holiday theme and a **Thai Songkran** water festival theme. Built with a notebook-paper card design, Thai language support, and a lightweight Node.js/Express + SQLite backend.
 
 ---
 
@@ -13,13 +13,13 @@ A Christmas/holiday-themed to-do list web app with a Thai-style notebook paper d
 
 ## Tech Stack
 
-| Layer    | Technology                          |
-|----------|-------------------------------------|
-| Runtime  | Node.js v18+                        |
-| Server   | Express 4                           |
-| Database | SQLite via `better-sqlite3`         |
-| Frontend | Vanilla HTML · CSS · JavaScript     |
-| Fonts    | Google Fonts — Sacramento · Itim    |
+| Layer    | Technology                              |
+|----------|-----------------------------------------|
+| Runtime  | Node.js v18+                            |
+| Server   | Express 4                               |
+| Database | SQLite via `better-sqlite3`             |
+| Frontend | Vanilla HTML · CSS · JavaScript         |
+| Fonts    | Google Fonts — Sacramento · Itim · Prompt |
 
 ---
 
@@ -33,7 +33,7 @@ A Christmas/holiday-themed to-do list web app with a Thai-style notebook paper d
 
 ```bash
 # 1. Clone the repo
-git clone <your-repo-url>
+git clone https://github.com/pannatgp/todolist.git
 cd todo-app
 
 # 2. Install backend dependencies
@@ -85,30 +85,33 @@ All endpoints are prefixed with `/api`.
 ---
 
 ## Folder Structure
-
-```
-todo-app/
-├── README.md
-├── .gitignore
-├── backend/
-│   ├── package.json          # Node dependencies & scripts
-│   ├── server.js             # Express app & REST routes
-│   └── db/
-│       ├── database.js       # SQLite connection & schema init
-│       └── tasks.db          # Auto-generated database file
-└── frontend/
-    ├── index.html            # App shell (migrated from todo.html)
-    ├── css/
-    │   └── style.css         # All styles — Christmas theme
-    ├── js/
-    │   └── app.js            # API calls, render, state
-    └── assets/               # Images / icons (if any)
-```
+.
+├── .cursor/               # IDE configuration files
+├── todo-app/              # Main application directory
+│   ├── backend/           # Node.js + Express server
+│   │   ├── db/            # SQLite database files (tasks.db)
+│   │   ├── node_modules/  # Backend dependencies
+│   │   ├── scripts/       # Utility and build scripts
+│   │   ├── package.json   # Backend scripts and dependencies
+│   │   └── server.js      # Entry point for the API
+│   └── frontend/          # Client-side web app
+│       ├── assets/        # Images and static media
+│       ├── css/           # Stylesheets (Christmas & Songkran themes)
+│       ├── js/            # Frontend logic (app.js)
+│       └── index.html     # Main user interface
+├── .gitignore             # Files to exclude from Git
+├── README.md              # Project documentation (this file)
+└── todo.html              # Legacy or backup HTML template
 
 ---
 
 ## Features
 
+- **Theme Switcher** — floating 🎨 button with dropdown to swap between themes
+- **🎄 Christmas Theme** — teal green background, cream notebook card, red accents, festive emojis (📌🎄🎅)
+- **🎉 Songkran Theme** — blue water gradient background, white card with wave border, orange accents, water festival emojis (💦🔫🐘🌺)
+- **Theme Persistence** — selected theme saves to localStorage and persists on refresh
+- **Smooth Transitions** — colors crossfade smoothly when switching themes
 - **Add tasks** — type and press Enter or click Add
 - **Toggle complete** — circular checkbox with strikethrough + fade
 - **Delete task** — hover a task to reveal the ✕ button
@@ -127,7 +130,7 @@ todo-app/
 - **Authentication** — user accounts so each person has their own list
 - **Drag-and-drop reorder** — rearrange tasks with the Drag and Drop API
 - **Categories / tags** — group tasks by colour-coded labels
-- **Dark mode** — CSS custom properties + `prefers-color-scheme` toggle
+- **More themes** — easily add new themes like Loy Krathong, Halloween, or Valentine's Day using the CSS variable system
 - **Due dates** — add optional deadlines with overdue highlighting
 - **Search / filter** — filter by status (all · active · completed)
 - **Offline support** — service worker + IndexedDB for PWA behaviour
