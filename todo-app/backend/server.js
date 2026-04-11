@@ -5,6 +5,7 @@ const db      = require('./db/database');
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
+
 // ── Middleware ──────────────────────────────────────────────
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '..', 'frontend')));
@@ -106,7 +107,7 @@ app.get('*', (_req, res) => {
 // #region agent log
 fetch('http://127.0.0.1:7334/ingest/8dc03aa6-de26-4457-afd2-894c68c40c39',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'2e3c95'},body:JSON.stringify({sessionId:'2e3c95',runId:'server-listen',hypothesisId:'H1-H3',location:'server.js:listen',message:'binding listen attempt',data:{port:Number(PORT),envPort:process.env.PORT||null},timestamp:Date.now()})}).catch(()=>{});
 // #endregion
-const server = app.listen(PORT, () => {
+const server = app.listen(PORT, '0.0.0.0', () => {
   // #region agent log
   fetch('http://127.0.0.1:7334/ingest/8dc03aa6-de26-4457-afd2-894c68c40c39',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'2e3c95'},body:JSON.stringify({sessionId:'2e3c95',runId:'server-listen',hypothesisId:'H1',location:'server.js:listen:callback',message:'listen succeeded',data:{port:Number(PORT)},timestamp:Date.now()})}).catch(()=>{});
   // #endregion
