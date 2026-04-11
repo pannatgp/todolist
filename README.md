@@ -85,24 +85,24 @@ All endpoints are prefixed with `/api`.
 ---
 
 ## Folder Structure
-.
-├── .cursor/               # IDE configuration files
-├── todo-app/              # Main application directory
-│   ├── backend/           # Node.js + Express server
-│   │   ├── db/            # SQLite database files (tasks.db)
-│   │   ├── node_modules/  # Backend dependencies
-│   │   ├── scripts/       # Utility and build scripts
-│   │   ├── package.json   # Backend scripts and dependencies
-│   │   └── server.js      # Entry point for the API
-│   └── frontend/          # Client-side web app
-│       ├── assets/        # Images and static media
-│       ├── css/           # Stylesheets (Christmas & Songkran themes)
-│       ├── js/            # Frontend logic (app.js)
-│       └── index.html     # Main user interface
-├── .gitignore             # Files to exclude from Git
-├── README.md              # Project documentation (this file)
-└── todo.html              # Legacy or backup HTML template
-
+```
+todo-app/
+├── README.md
+├── .gitignore
+├── backend/
+│   ├── package.json          # Node dependencies & scripts
+│   ├── server.js             # Express app & REST routes
+│   └── db/
+│       ├── database.js       # SQLite connection & schema init
+│       └── tasks.db          # Auto-generated database file
+└── frontend/
+    ├── index.html            # App shell (migrated from todo.html)
+    ├── css/
+    │   └── style.css         # All styles — Christmas theme
+    ├── js/
+    │   └── app.js            # API calls, render, state
+    └── assets/               # Images / icons (if any)
+```
 ---
 
 ## Features
