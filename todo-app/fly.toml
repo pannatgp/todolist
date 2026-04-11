@@ -7,7 +7,7 @@ app = 'backend-delicate-dust-6813'
 primary_region = 'sin'
 
 [build]
-
+  dockerfile = "Dockerfile"
 [[mounts]]
   source = 'data'
   destination = '/data'
