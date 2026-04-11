@@ -7,6 +7,9 @@ const API = '/api/tasks';
 // ── In-memory task cache ─────────────────────────────────────
 let tasks = [];
 
+// ── Filter state ──────────────────────────────────────────────
+let currentFilter = 'all'; // 'all' | 'active' | 'completed'
+
 // ── Themes ───────────────────────────────────────────────────
 // Add more themes here — each needs bodyClass, decos, and emptyMsg.
 const THEMES = {
@@ -18,7 +21,7 @@ const THEMES = {
       topLeft:     '📌',
       topRight:    '🎄',
       bottomLeft:  '🎅',
-      bottomRight: '',
+      bottomRight: '🎁',
     },
   },
   songkran: {
@@ -143,6 +146,15 @@ function setLoading(on) {
   document.querySelector('.task-meta').style.display   = on ? 'none'  : 'flex';
 }
 
+// ── Filter tabs ────────────────────────────────────────────────
+function setFilter(filter) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.filter === filter);
+  });
+  render();
+}
+
 // ── Render ────────────────────────────────────────────────────
 function render() {
   const grid     = document.getElementById('tasksGrid');
@@ -157,6 +169,11 @@ function render() {
   counter.textContent    = total ? `${remaining} remaining · ${doneCount} done` : '';
   clearBtn.style.display = doneCount > 0 ? 'inline-block' : 'none';
 
+  // Apply filter
+  const filtered = currentFilter === 'all'
+    ? tasks
+    : tasks.filter(t => currentFilter === 'active' ? !t.completed : t.completed);
+
   // Task list
   if (total === 0) {
     const msg = THEMES[currentTheme]?.emptyMsg ?? 'No tasks yet — add one above!';
@@ -164,7 +181,13 @@ function render() {
     return;
   }
 
-  grid.innerHTML = tasks.map(t => `
+  if (filtered.length === 0) {
+    const filterLabel = currentFilter === 'active' ? 'active' : 'completed';
+    grid.innerHTML = `<div class="empty-state">No ${filterLabel} tasks</div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(t => `
     <div class="task-item" data-id="${t.id}">
       <div class="task-check${t.completed ? ' checked' : ''}"
            onclick="toggleTask(${t.id})"

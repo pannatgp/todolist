@@ -1,13 +1,20 @@
 # 🎄🎉🔫 Todo App — Chistmas & Songkran Theme
 
-A to-do list web app with swappable themes — currently featuring a **Christmas** holiday theme and a **Thai Songkran** water festival theme. Built with a notebook-paper card design, Thai language support, and a lightweight Node.js/Express + SQLite backend.
+A to-do list web app with swappable themes  Built with a notebook-paper card design, Thai language support, and a lightweight Node.js/Express + SQLite backend.
+
+## Theme
+— currently featuring a **Christmas** holiday theme 
+- a **Thai Songkran** water festival theme
 
 ---
 
 ## Screenshot
 
-> _Add a screenshot here after running the app_
-> `frontend/assets/screenshot.png`
+> _App Screenshot after running
+> Chistmas 🎄
+> `frontend/assets/screenshot-christmas.png`
+> Thai Songran 💦
+> `frontend/assets/screenshot-songkran.png`
 
 ---
 
@@ -117,6 +124,7 @@ All endpoints are prefixed with `/api`.
 - **Delete task** — hover a task to reveal the ✕ button
 - **Clear completed** — one-click bulk delete of done tasks
 - **Task counter** — "X remaining · Y done" live count
+- **Search / filter** — filter by status (all · active · completed)
 - **Timestamps** — each task shows when it was added (`DD/MM/YYYY, HH:MM`)
 - **Loading spinner** — shown while tasks are fetching on page load
 - **Error toasts** — friendly messages if the API is unreachable
@@ -132,6 +140,5 @@ All endpoints are prefixed with `/api`.
 - **Categories / tags** — group tasks by colour-coded labels
 - **More themes** — easily add new themes like Loy Krathong, Halloween, or Valentine's Day using the CSS variable system
 - **Due dates** — add optional deadlines with overdue highlighting
-- **Search / filter** — filter by status (all · active · completed)
 - **Offline support** — service worker + IndexedDB for PWA behaviour
 - **Recurring tasks** — mark tasks as daily/weekly so they reset automatically

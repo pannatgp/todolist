@@ -68,6 +68,13 @@
       </button>
     </div>
 
+    <!-- Filter tabs -->
+    <div class="filter-bar" id="filterBar">
+      <button class="filter-btn active" data-filter="all"       onclick="setFilter('all')">All</button>
+      <button class="filter-btn"        data-filter="active"     onclick="setFilter('active')">Active</button>
+      <button class="filter-btn"        data-filter="completed"  onclick="setFilter('completed')">Completed</button>
+    </div>
+
     <!-- Loading spinner -->
     <div class="spinner-wrap" id="spinnerWrap" aria-label="Loading tasks…">
       <div class="spinner-ring"></div>

@@ -103,7 +103,24 @@ app.get('*', (_req, res) => {
 });
 
 // ── Start ────────────────────────────────────────────────────
-app.listen(PORT, () => {
+// #region agent log
+fetch('http://127.0.0.1:7334/ingest/8dc03aa6-de26-4457-afd2-894c68c40c39',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'2e3c95'},body:JSON.stringify({sessionId:'2e3c95',runId:'server-listen',hypothesisId:'H1-H3',location:'server.js:listen',message:'binding listen attempt',data:{port:Number(PORT),envPort:process.env.PORT||null},timestamp:Date.now()})}).catch(()=>{});
+// #endregion
+const server = app.listen(PORT, () => {
+  // #region agent log
+  fetch('http://127.0.0.1:7334/ingest/8dc03aa6-de26-4457-afd2-894c68c40c39',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'2e3c95'},body:JSON.stringify({sessionId:'2e3c95',runId:'server-listen',hypothesisId:'H1',location:'server.js:listen:callback',message:'listen succeeded',data:{port:Number(PORT)},timestamp:Date.now()})}).catch(()=>{});
+  // #endregion
   console.log(`✅  Server running at http://localhost:${PORT}`);
   console.log(`    Press Ctrl+C to stop.`);
+});
+
+server.on('error', (err) => {
+  // #region agent log
+  fetch('http://127.0.0.1:7334/ingest/8dc03aa6-de26-4457-afd2-894c68c40c39',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'2e3c95'},body:JSON.stringify({sessionId:'2e3c95',runId:'server-listen',hypothesisId:'H1-H2',location:'server.js:server.on(error)',message:err.code||err.message,data:{code:err.code,port:Number(PORT)},timestamp:Date.now()})}).catch(()=>{});
+  // #endregion
+  if (err.code === 'EADDRINUSE') {
+    console.error(`Port ${PORT} is already in use. Stop the other process or run: PORT=3001 npm start`);
+    process.exit(1);
+  }
+  throw err;
 });

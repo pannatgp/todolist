@@ -9,44 +9,44 @@
 :root {
   /* Body */
   --body-bg:           #2e9e8c;
-  --body-dot-a:        rgba(255,255,255,0.18);
-  --body-dot-b:        rgba(255,255,255,0.10);
+  --body-dot-a:        rgba(34,120,60,0.18);
+  --body-dot-b:        rgba(34,120,60,0.10);
 
   /* Card */
-  --card-bg:           #fdf5e0;
+  --card-bg:           #faf9f6;
   --card-border:       none;
-  --card-shadow:       0 10px 40px rgba(0,0,0,0.2);
-  --card-margin-line:  #f4a4a4;
-  --card-rule-line:    #cfc2a0;
+  --card-shadow:       0 12px 48px rgba(0,0,0,0.35);
+  --card-margin-line:  #e0d8cc;
+  --card-rule-line:    #f0ebe3;
 
   /* Title */
   --title-font:        'Sacramento', cursive;
   --title-size:        62px;
-  --title-color:       #c0392b;
-  --subtitle-color:    #2471a3;
+  --title-color:       #8b1a1a;
+  --subtitle-color:    #8a8a8a;
 
   /* Add button */
-  --add-bg:            #b83232;
-  --add-bg-hover:      #d63c3c;
+  --add-bg:            #8b1a1a;
+  --add-bg-hover:      #a52a2a;
 
   /* Divider */
-  --divider-color:     #d5c8a8;
+  --divider-color:     #e0d8cc;
 
   /* Counter / clear */
-  --counter-color:     #9a8a6a;
-  --clear-color:       #c0392b;
+  --counter-color:     #8a8a8a;
+  --clear-color:       #8b1a1a;
 
   /* Spinner */
-  --spinner-track:     #d5c8a8;
-  --spinner-fill:      #2471a3;
+  --spinner-track:     #e8e0d4;
+  --spinner-fill:      #8b1a1a;
 
   /* Tasks */
-  --task-text:         #1a5e8a;
-  --task-check:        #2471a3;
-  --task-ts:           #b0a080;
-  --task-empty:        #b8a888;
-  --delete-color:      #c0392b;
-  --delete-hover:      #922b21;
+  --task-text:         #2c2c2c;
+  --task-check:        #8b1a1a;
+  --task-ts:           #b0b0b0;
+  --task-empty:        #c0c0c0;
+  --delete-color:      #8b1a1a;
+  --delete-hover:      #6b0f0f;
 }
 
 /* ── Reset ──────────────────────────────────────────────────── */
@@ -61,9 +61,9 @@ body {
   min-height: 100vh;
   background-color: var(--body-bg);
   background-image:
-    radial-gradient(circle, var(--body-dot-a) 1.5px, transparent 1.5px),
-    radial-gradient(circle, var(--body-dot-b) 1px,   transparent 1px);
-  background-size: 36px 36px, 18px 18px;
+    radial-gradient(circle, var(--body-dot-a) 3px, transparent 3px),
+    radial-gradient(circle, var(--body-dot-b) 2px,   transparent 2px);
+  background-size: 48px 48px, 24px 24px;
   background-position: 0 0, 9px 9px;
   font-family: 'Itim', cursive;
   display: flex;
@@ -312,6 +312,7 @@ body.theme-songkran .theme-option.active {
   justify-content: space-between;
   min-height: 28px;
   margin-bottom: 10px;
+  padding-left: 56px;
 }
 
 .task-counter {
@@ -335,6 +336,37 @@ body.theme-songkran .theme-option.active {
 .clear-btn:hover {
   background: var(--clear-color);
   color: #fff;
+}
+
+/* ── Filter tabs ─────────────────────────────────────────────── */
+.filter-bar {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 10px;
+  padding-left: 56px;
+}
+
+.filter-btn {
+  font-family: 'Itim', cursive;
+  font-size: 12px;
+  padding: 4px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--divider-color);
+  background: none;
+  color: var(--counter-color);
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+}
+
+.filter-btn:hover {
+  background: var(--divider-color);
+  color: var(--task-text);
+}
+
+.filter-btn.active {
+  background: var(--task-check);
+  color: #fff;
+  border-color: var(--task-check);
 }
 
 /* ── Loading spinner ─────────────────────────────────────────── */
@@ -363,6 +395,7 @@ body.theme-songkran .theme-option.active {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 4px 24px;
+  padding-left: 56px;
 }
 
 /* ── Empty state ─────────────────────────────────────────────── */
