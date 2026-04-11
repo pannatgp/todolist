@@ -93,24 +93,26 @@ All endpoints are prefixed with `/api`.
 ---
 
 ## Folder Structure
-.
-├── .cursor/               # IDE configuration files
-├── todo-app/              # Main application directory
-│   ├── backend/           # Node.js + Express server
-│   │   ├── db/            # SQLite database files (tasks.db)
-│   │   ├── node_modules/  # Backend dependencies
-│   │   ├── scripts/       # Utility and build scripts
-│   │   ├── package.json   # Backend scripts and dependencies
-│   │   └── server.js      # Entry point for the API
-│   └── frontend/          # Client-side web app
-│       ├── assets/        # Images and static media
-│       ├── css/           # Stylesheets (Christmas & Songkran themes)
-│       ├── js/            # Frontend logic (app.js)
-│       └── index.html     # Main user interface
-├── .gitignore             # Files to exclude from Git
-├── README.md              # Project documentation (this file)
-└── todo.html              # Legacy or backup HTML template
 
+```text
+.
+├── .cursor/                # IDE configuration files
+├── todo-app/               # Main application directory
+│   ├── backend/            # Node.js + Express server
+│   │   ├── db/             # SQLite database files (tasks.db)
+│   │   ├── node_modules/   # Backend dependencies
+│   │   ├── scripts/        # Utility and build scripts
+│   │   ├── package.json    # Backend scripts and dependencies
+│   │   └── server.js       # Entry point for the API
+│   └── frontend/           # Client-side web app
+│       ├── assets/         # Images and static media
+│       ├── css/            # Stylesheets (Christmas & Songkran themes)
+│       ├── js/             # Frontend logic (app.js)
+│       └── index.html      # Main user interface
+├── .gitignore              # Files to exclude from Git
+├── README.md               # Project documentation
+└── todo.html               # Legacy or backup HTML template
+```
 ---
 
 ## Features
