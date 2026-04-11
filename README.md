@@ -12,9 +12,9 @@ A to-do list web app with swappable themes  Built with a notebook-paper card des
 
 > _App Screenshot after running
 > Chistmas 🎄
-> `frontend/assets/screenshot-christmas.png`
+![Christmas Theme Screenshot](todo-app/frontend/assets/screenshot-christmas.png)>
 > Thai Songran 💦
-> `frontend/assets/screenshot-songkran.png`
+![Songkran Theme Screenshot](todo-app/frontend/assets/screenshot-songkran.png)
 
 ---
 
